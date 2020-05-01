@@ -36,7 +36,7 @@ app.get('/todos', (req, res) => {
     }, (e)=>{
         res.status(400).send(e);
     })
-})
+});
 
 // GET/todos/3833774
 app.get('/todos/:id', (req, res) => {
@@ -54,7 +54,25 @@ app.get('/todos/:id', (req, res) => {
     }, (e) => {
         res.status(404).send();
     })
-})
+});
+
+// delecting records
+app.delete('/todos/:id', (req, res) => {
+    var id  = req.params.id;
+    // validating the id
+
+    if (!ObjectID.isValid(id)) {
+       return res.status(404).send()
+    }
+    Todo.findByIdAndRemove(id).then((todo) => {
+        if (!todo) {
+            res.status(400).send();
+        }
+        res.send(todo);
+    }, (e) => {
+        res.status(400).send();
+    });
+});
 
 
 
